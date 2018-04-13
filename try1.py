@@ -8,11 +8,13 @@ address_table = []
 address_table1 = []
 hex_dex_bin = []
 
-def findMri(value):
-    for i in address_table:
-        if value == i[0]:
-            return i[1]
-    return None
+def search(myDict, search1):
+    search.a=[]
+    for key, value in myDict.items():
+        if search1 in value:
+            search.a.append(key)
+
+
 mri = {
     'AND': 0x0,
     'ADD': 0x1,
@@ -35,27 +37,28 @@ Imri = {
 }
 
 nonmri = {
-    'CLA':  7800,
-    'CLE':  7400,
-    'CMA':  7200,
-    'CME':  7100,
-    'CIR':  7080,
-    'CIL':  7040,
-    'INC':  7020,
-    'SPA':  7010,
-    'SNA':  7008,
-    'SZA':  7004,
-    'SZE':  7002,
-    'HLT':  7001,
+    'CLA': 0x7800,
+    'CLE': 0x7400,
+    'CMA': 0x7200,
+    'CME': 0x7100,
+    'CIR': 0x7080,
+    'CIL': 0x7040,
+    'INC': 0x7020,
+    'SPA': 0x7010,
+    'SNA': 0x7008,
+    'SZA': 0x7004,
+    'SZE': 0x7002,
+    'HLT': 0x7001,
     #io 
-    'INP':  15800,
-    'OUT':  15400,
-    'SKI':  14200,
-    'SKO':  15100,
-    'ION':  15080,
-    'IOF':  15040,
+'INP': 0xF800,
+    'OUT': 0xF400,
+    'SKI': 0xF200,
+    'SKO': 0xF100,
+    'ION': 0xF080,
+    'IOF': 0xF040,
 }
-psuedo = ("ORG","ENG","DEC","HEC")
+#psuedo = ("ORG","ENG","DEC","HEC")
+
 
 
 a = open("Instr.txt","r")
@@ -88,16 +91,64 @@ while line[:-1]:
     line = a.readline()
     #print(re.search("LDP", lineup)) 
     lineup = line.upper()
+    
+    tempo = lineup.split(" ")
+    #print(tempo)
+    #non_mri = tempo[0]
+    mri_get = len(tempo)
+    
+    if mri_get==1:
+        non_mri = tempo[0]
+        if non_mri == 'END':
+            #print("END the line")
+            exit(1)
+        # else:
+
+            #print(non_mri)
+         #search(nonmri, str(non_mri))
+    #     print(search.a)
+        for v,k in nonmri.items():
+            if re.match(tempo[0],v):
+                address_table.append([k,lc])
+            # else:
+            #     print("wrong instruction")        
+        # for v,k in nonmri.items():
+        #     if re.match('END',non_mri):
+        #         pass
+        #     elif re.match(non_mri,v):
+        #         address_table1.append([tempo[0],lc])
+
+
+            # non_mri = tempo[0]
+            # print(type(non_mri))
+            # for v,k in nonmri.items():
+ 
+    #             if re.match(non_mri,v):
+    #                 print(nonmri)
+    #                 print(v)
+    #                 address_table1.append([ak,lc])
+    #                 i=i+1
+    #                 lc = lc +1 
+            # if non_mri in nonmri.values():
+            #     print("wahh")
+            # # for v,k in nonmri.items():
+            #     address_table.append([tempo[0],lc])
+            #     if re.match(tempo[0],v):
+                    
+            #         lc = lc +1 
+ 
 
     #process of store adress symbol table
     
     temp1 = lineup.split(" ")[0]
     #print(linec+1, temp1)
-
+    #works well with MRI instruction
     for v,k in mri.items():
-        ak = k 
+        ak = bin(k) 
+        ak = ak[2:] #first 2 digit is like ob 
+        ak = ak.zfill(16)
         if re.match(temp1,v):
-            address_table.append([ak,lc])
+            address_table.append([ak,lc])                                
             i=i+1
             lc = lc +1 
     
@@ -145,15 +196,15 @@ while line[:-1]:
             print("Invalid Label : line no. "+ str(linec))
             exit(1)
         label1 = temp3
-        i+=1;
+        i+=1
+        # labeli = int(label1)
+        # labeli = bin(labeli)
+        # # labeli = label1[2:]
+        # labeli = labeli.zfill(16)
+        # #label1 = bin(label1)
         address_table.append([label1, lc])
         lc += 1
         linec += 1   
-
-
-
-    
-    
     
     linec+=1
 #print(linec)   
@@ -164,27 +215,4 @@ i1 = i-7;
 j1 = j -17;
 print(address_table[0:i1])
 print("HEX or DEX ",hex_dex_bin)
-#print(address_table)
-# def SecondPass(File):
-#   lineNo = 0
-#   lc = 0
-
-#   for line in File:
-#       if 'DEC' in line:
-#           try:
-#               temp,ads = line.split(" ")
-#               a = re.findall('[^0-9]',ads[:-1])
-#               if len(a) > 0:
-#                   print("Invalid Address : line no. "+ str(lineNO))
-#                   exit(1)
-#               val = int(ads)
-#               val = bin(val)
-#               val = val[2:]
-#               val = val.zfill(16)
-#               hex_dex_bin.append([val, lc])
-#               except ValueError:
-#                   lc = 0
-#               except Exception as e:
-#                   print("ERROR on line "+ str(lineNO) + "\n" + str(e))
-#                   exit(1)
-#               lc += 1
+print(address_table1)
