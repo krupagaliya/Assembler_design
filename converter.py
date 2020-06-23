@@ -8,12 +8,12 @@ address_table = []
 address_table1 = []
 hex_dex_bin = []
 
+
 def search(myDict, search1):
     search.a=[]
     for key, value in myDict.items():
         if search1 in value:
             search.a.append(key)
-
 
 mri = {
     'AND': 0x0,
@@ -100,13 +100,8 @@ while line[:-1]:
     if mri_get==1:
         non_mri = tempo[0]
         if non_mri == 'END':
-            #print("END the line")
+            print("END the line")
             exit(1)
-        # else:
-
-            #print(non_mri)
-         #search(nonmri, str(non_mri))
-    #     print(search.a)
         for v,k in nonmri.items():
             if re.match(tempo[0],v):
                 address_table.append([k,lc])
@@ -138,11 +133,11 @@ while line[:-1]:
             #         lc = lc +1 
  
 
-    #process of store adress symbol table
-    
+    # process of store adress symbol table
     temp1 = lineup.split(" ")[0]
     #print(linec+1, temp1)
-    #works well with MRI instruction
+
+    # works well with MRI instruction
     for v,k in mri.items():
         ak = bin(k) 
         ak = ak[2:] #first 2 digit is like ob 
@@ -206,13 +201,13 @@ while line[:-1]:
         lc += 1
         linec += 1   
     
-    linec+=1
-#print(linec)   
+    linec += 1
+# print(linec)
 a.close()  
-#print(address_table)  
+# print(address_table)
 print("===============================")
-i1 = i-7;
-j1 = j -17;
+i1 = i-7
+j1 = j -17
 print(address_table[0:i1])
-print("HEX or DEX ",hex_dex_bin)
+print("HEX or DEX ", hex_dex_bin)
 print(address_table1)
